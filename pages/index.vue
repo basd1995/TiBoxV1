@@ -1,20 +1,21 @@
-<template>
-  <div>
-    <button @click="signIn('github')" class="login-button github">
-      使用 GitHub 登录
-    </button>
-    <button @click="signIn('google')" class="login-button google">
-      使用 Google 登录
-    </button>
-    <button v-if="status === 'authenticated'" @click="signOut()" class="logout-button">
-      退出登录
-    </button>
-  </div>
-</template>
-
 <script setup lang="ts">
 const { signIn, signOut, status } = useAuth()
 </script>
+
+<template>
+  <div>
+    <button class="login-button github" @click="signIn('github')">
+      使用 GitHub 登录
+    </button>
+    <button class="login-button google" @click="signIn('google')">
+      使用 Google 登录
+    </button>
+    <button v-if="status === 'authenticated'" class="logout-button" @click="signOut()">
+      退出登录
+    </button>
+    <UserProfile />
+  </div>
+</template>
 
 <style scoped>
 .login-button {
