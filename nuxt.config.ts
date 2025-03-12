@@ -12,10 +12,10 @@ export default defineNuxtConfig({
       type: 'authjs',
     },
   },
-  devServer: {
-    port: 3000,
-    host: '0.0.0.0',
-  },
+  // devServer: {
+  //   port: 3000,
+  //   host: '0.0.0.0',
+  // },
   eslint: {
     config: {
       standalone: false,

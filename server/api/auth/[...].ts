@@ -18,6 +18,7 @@ export default NuxtAuthHandler({
   ],
   callbacks: {
     async session({ session, user }: { session: any, user: any }) {
+      console.log('callbacks:session', { session, user })
       if (session.user) {
         session.user.id = user.id
       }
