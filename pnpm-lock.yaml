@@ -12,7 +12,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.0(@prisma/client@6.5.0(prisma@6.5.0(typescript@5.8.2))(typescript@5.8.2))(nodemailer@6.10.0)
       '@prisma/client':
-        specifier: ^6.4.1
+        specifier: ^6.5.0
         version: 6.5.0(prisma@6.5.0(typescript@5.8.2))(typescript@5.8.2)
       '@sidebase/nuxt-auth':
         specifier: 0.9.4
@@ -52,7 +52,7 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1(eslint@9.22.0(jiti@2.4.2))
       prisma:
-        specifier: ^6.4.1
+        specifier: ^6.5.0
         version: 6.5.0(typescript@5.8.2)
 
 packages:

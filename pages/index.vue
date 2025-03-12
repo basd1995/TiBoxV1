@@ -1,9 +1,13 @@
 <script setup lang="ts">
 const { signIn, signOut, status } = useAuth()
+const testString = ref('test')
 </script>
 
 <template>
   <div>
+    <div @click="testString = 'test2'">
+      {{ testString }}
+    </div>
     <button class="login-button github" @click="signIn('github')">
       使用 GitHub 登录
     </button>

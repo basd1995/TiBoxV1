@@ -21,19 +21,38 @@ export default defineEventHandler(async (event) => {
     const verifyCode = generateVerificationCode()
     const verifyCodeExp = generateExpiryDate(15) // 15分钟后过期
 
-    // 更新或创建用户
-    await prisma.user.upsert({
+    console.log('生成的验证码信息:', { email, verifyCode, verifyCodeExp })
+
+    // 确保用户存在
+    const user = await prisma.user.upsert({
       where: { email },
-      update: {
-        verifyCode,
-        verifyCodeExp
-      },
+      update: {},
       create: {
-        email,
-        verifyCode,
-        verifyCodeExp
+        email
       }
     })
+
+    console.log('用户信息:', user)
+
+    // 删除旧的验证码
+    const deletedTokens = await prisma.verificationToken.deleteMany({
+      where: {
+        identifier: email
+      }
+    })
+
+    console.log('删除的旧验证码:', deletedTokens)
+
+    // 创建新的验证码记录
+    const newToken = await prisma.verificationToken.create({
+      data: {
+        identifier: email,
+        token: verifyCode,
+        expires: verifyCodeExp
+      }
+    })
+
+    console.log('创建的新验证码:', newToken)
 
     // 发送验证码邮件
     await sendVerificationCode(email, verifyCode)
@@ -44,6 +63,7 @@ export default defineEventHandler(async (event) => {
       data: { email } 
     }
   } catch (error: any) {
+    console.error('发送验证码失败:', error)
     return {
       statusCode: 500,
       message: error.message || '发送验证码失败'

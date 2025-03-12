@@ -7,6 +7,8 @@ export default defineEventHandler(async (event) => {
   try {
     const { email, code, password } = await readBody(event)
 
+    console.log('收到的验证请求:', { email, code })
+
     if (!email || !code || !password) {
       throw createError({
         statusCode: 400,
@@ -19,12 +21,15 @@ export default defineEventHandler(async (event) => {
       where: { email }
     })
 
+    console.log('查找到的用户:', user)
+
     if (!user) {
       throw createError({
         statusCode: 404,
         message: '用户不存在'
       })
     }
+
     // 验证验证码
     const verifyCode = await prisma.verificationToken.findFirst({
       where: {
@@ -32,6 +37,8 @@ export default defineEventHandler(async (event) => {
         token: code
       }
     })
+
+    console.log('查找到的验证码:', verifyCode)
 
     if (!verifyCode || isCodeExpired(verifyCode.expires)) {
       throw createError({
@@ -42,18 +49,31 @@ export default defineEventHandler(async (event) => {
 
     // 加密密码并更新用户
     const hashedPassword = await hashPassword(password)
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { email },
       data: {
         password: hashedPassword,
-        verifyCode: null,
-        verifyCodeExp: null,
         emailVerified: new Date()
       }
     })
 
+    console.log('更新后的用户:', updatedUser)
+
+    // 删除已使用的验证码
+    const deletedToken = await prisma.verificationToken.delete({
+      where: {
+        identifier_token: {
+          identifier: email,
+          token: code
+        }
+      }
+    })
+
+    console.log('删除的验证码:', deletedToken)
+
     return { success: true }
   } catch (error: any) {
+    console.error('验证失败:', error)
     throw createError({
       statusCode: 500,
       message: error.message || '验证失败'

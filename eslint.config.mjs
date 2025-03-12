@@ -6,6 +6,7 @@ export default withNuxt(
   antfu({
     rules: {
       'node/prefer-global/process': 'off',
+      'no-console': ['error', { allow: ['info', 'warn', 'error'] }],
     },
     formatters: {
       /**

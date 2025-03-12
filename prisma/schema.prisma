@@ -47,8 +47,6 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?   // 加密后的密码
-  verifyCode    String?   // 邮箱验证码
-  verifyCodeExp DateTime? // 验证码过期时间
   accounts      Account[]
   sessions      Session[]
 }

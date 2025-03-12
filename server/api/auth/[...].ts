@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import GithubProvider from 'next-auth/providers/github'
+// @ts-ignore
 import { NuxtAuthHandler } from '#auth'
 
 const prisma = new PrismaClient()
