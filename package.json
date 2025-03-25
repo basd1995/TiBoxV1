@@ -22,6 +22,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/nodemailer": "^6.4.17",
     "bcryptjs": "^3.0.2",
+    "leafer-editor": "^1.5.1",
     "next-auth": "4.21.1",
     "nodemailer": "^6.10.0",
     "nuxt": "^3.15.4",
