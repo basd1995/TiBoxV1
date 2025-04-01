@@ -5,11 +5,11 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   try {
-    const { email, code, password } = await readBody(event)
+    const { email, code } = await readBody(event)
 
     console.log('收到的验证请求:', { email, code })
 
-    if (!email || !code || !password) {
+    if (!email || !code) {
       throw createError({
         statusCode: 400,
         message: '请提供完整信息'
@@ -48,16 +48,16 @@ export default defineEventHandler(async (event) => {
     }
 
     // 加密密码并更新用户
-    const hashedPassword = await hashPassword(password)
-    const updatedUser = await prisma.user.update({
-      where: { email },
-      data: {
-        password: hashedPassword,
-        emailVerified: new Date()
-      }
-    })
+    // const hashedPassword = await hashPassword(password)
+    // const updatedUser = await prisma.user.update({
+    //   where: { email },
+    //   data: {
+    //     password: hashedPassword,
+    //     emailVerified: new Date()
+    //   }
+    // })
 
-    console.log('更新后的用户:', updatedUser)
+    // console.log('更新后的用户:', updatedUser)
 
     // 删除已使用的验证码
     const deletedToken = await prisma.verificationToken.delete({

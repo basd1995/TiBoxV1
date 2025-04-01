@@ -55,7 +55,7 @@ export default defineEventHandler(async (event) => {
     console.log('创建的新验证码:', newToken)
 
     // 发送验证码邮件
-    await sendVerificationCode(email, verifyCode)
+    // await sendVerificationCode(email, verifyCode)
 
     return { 
       statusCode: 200,

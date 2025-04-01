@@ -1,6 +1,28 @@
 <script setup lang="ts">
 const { signIn, signOut, status } = useAuth()
 const testString = ref('test')
+
+const email = ref('103510351035@qq.com')
+const code = ref('')
+
+async function handleLogin() {
+  const result = await signIn('credentials', {
+    email: email.value,
+    code: code.value,
+    redirect: false,
+  })
+  console.log('result', result)
+}
+
+async function handleSendCode() {
+  const result = await useFetch('/api/auth/email/send-code', {
+    method: 'POST',
+    body: {
+      email: email.value,
+    },
+  })
+  console.log('result', result)
+}
 </script>
 
 <template>
@@ -8,12 +30,30 @@ const testString = ref('test')
     <div @click="testString = 'test2'">
       {{ testString }}
     </div>
-    <button class="login-button github" @click="signIn('github')">
-      使用 GitHub 登录
-    </button>
-    <button class="login-button google" @click="signIn('google')">
-      使用 Google 登录
-    </button>
+    <div>
+      <button class="login-button github" @click="signIn('github')">
+        使用 GitHub 登录
+      </button>
+    </div>
+    <div>
+      <button class="login-button google" @click="signIn('google')">
+        使用 Google 登录
+      </button>
+    </div>
+    <div>
+      <div>
+        <input v-model="email" type="email" placeholder="邮箱">
+      </div>
+      <div>
+        <input v-model="code" type="text" placeholder="验证码">
+      </div>
+      <button class="login-button email" @click="handleSendCode">
+        发送验证码
+      </button>
+      <button class="login-button email" @click="handleLogin">
+        使用邮箱登录
+      </button>
+    </div>
     <button v-if="status === 'authenticated'" class="logout-button" @click="signOut()">
       退出登录
     </button>
@@ -38,6 +78,11 @@ const testString = ref('test')
 
 .google {
   background-color: #4285f4;
+  color: white;
+}
+
+.email {
+  background-color: #007bff;
   color: white;
 }
 
